@@ -23,6 +23,9 @@ async function handleSignup() {
             alert('회원가입 완료!')
             window.location.replace('http://127.0.0.1:5500/index.html')
         }
+        else if (response.status == 300){
+            alert('이미 가입된 이메일입니다.')
+        }
     }
  
 }
