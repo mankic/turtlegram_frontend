@@ -1,3 +1,6 @@
+const backend_base_url = 'http://127.0.0.1:5002'
+const frontend_base_url = 'http://127.0.0.1:5500'
+
 async function handleSignup() {
 
     const signupData = {
@@ -14,7 +17,7 @@ async function handleSignup() {
     }
     // 이메일 형식 맞으면
     else {
-        const response = await fetch('http://127.0.0.1:5002/signup', {  // app.py 서버 주소
+        const response = await fetch(`${backend_base_url}/signup`, {  // app.py 서버 주소
         method: 'POST',
         body: JSON.stringify(signupData)
         })
@@ -22,9 +25,9 @@ async function handleSignup() {
 
         if (response.status == 200){
             alert('회원가입 완료!')
-            window.location.replace('http://127.0.0.1:5500/index.html')  
+            window.location.replace(`${frontend_base_url}/signin.html`)  
         }
-        else if (response.status == 300){
+        else if (response.status == 401){
             alert('이미 가입된 이메일입니다.')
         }
     }
@@ -46,17 +49,23 @@ async function handleSignin() {
     }
     // 이메일 형식 맞으면
     else {
-        const response = await fetch('http://127.0.0.1:5002/signin', {  // app.py 서버 주소
+        const response = await fetch(`${backend_base_url}/signin`, {  // app.py 서버 주소
         method: 'POST',
         body: JSON.stringify(signinData)
         })
         console.log(response)   
+        
 
         if (response.status == 200){
             alert('로그인 완료!')
-            window.location.replace('http://127.0.0.1:5500/index.html')  
+            window.location.replace(`${frontend_base_url}/signin.html`)  
+
+            response_json = await response.json()   // 받을때도 json 형식으로 받으면 메세지랑 토큰 받을수있다!!!!!
+            console.log(response_json)
+
+            localStorage.setItem('token',response_json.token)   // 브라우저 로컬저장소에 키,밸류 값으로 저장
         }
-        else if (response.status == 300){
+        else if (response.status == 401){
             alert('가입된 정보가 없습니다. 회원가입 해주세요.')
         }
     }
