@@ -61,7 +61,7 @@ async function handleSignin() {
             window.location.replace(`${frontend_base_url}/signin.html`)  
 
             response_json = await response.json()   // 받을때도 json 형식으로 받으면 메세지랑 토큰 받을수있다!!!!!
-            console.log(response_json)
+            // console.log(response_json)
 
             localStorage.setItem('token',response_json.token)   // 브라우저 로컬저장소에 키,밸류 값으로 저장
         }
@@ -69,4 +69,23 @@ async function handleSignin() {
             alert('가입된 정보가 없습니다. 회원가입 해주세요.')
         }
     }
+}
+
+
+async function getUserinfo() {              // async 비동기. 동시작업가능. + await 대기. response기다림
+    // console.log('get user info')
+    // console.log(localStorage.getItem('token'))
+
+    const response = await fetch(`${backend_base_url}/getuserinfo`, {
+        headers:{
+            'Authorization': localStorage.getItem('token')
+        }
+    }
+    )
+    response_json = await response.json()
+    console.log(response_json)
+    const username = document.getElementById('username')
+
+    username.innerText = response_json.email
+    
 }
