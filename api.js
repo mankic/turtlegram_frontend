@@ -58,12 +58,13 @@ async function handleSignin() {
 
         if (response.status == 200){
             alert('로그인 완료!')
-            window.location.replace(`${frontend_base_url}/signin.html`)  
+            window.location.replace(`${frontend_base_url}/index.html`)  
 
             response_json = await response.json()   // 받을때도 json 형식으로 받으면 메세지랑 토큰 받을수있다!!!!!
             // console.log(response_json)
 
             localStorage.setItem('token',response_json.token)   // 브라우저 로컬저장소에 키,밸류 값으로 저장
+        
         }
         else if (response.status == 401){
             alert('가입된 정보가 없습니다. 회원가입 해주세요.')
