@@ -84,9 +84,47 @@ async function getUserinfo() {              // async 비동기. 동시작업가�
     }
     )
     response_json = await response.json()
-    console.log(response_json)
+    // console.log(response_json)
     const username = document.getElementById('username')
 
     username.innerText = response_json.email
     
+}
+
+// article_create.js 에서 데이터 받고, api post 요청
+async function postArticle(title, content){     // 받는데이터 읹자
+    const articleData = {
+        title: title,
+        content: content,
+    }
+    
+    const response = await fetch(`${backend_base_url}/article`,{
+        method: 'POST',
+        headers: {'Authorization':localStorage.getItem("token")},
+        body: JSON.stringify(articleData)
+    })
+
+    response_json = await response.json()
+    console.log(response_json)
+
+    // 요청 성공했을때
+    if (response.status == 200){
+        alert('게시글작성 완료!')
+        window.location.replace(`${frontend_base_url}/`)  
+    }
+    else {
+        alert('가입된 정보가 없습니다. 회원가입 해주세요.')
+    }
+}
+
+
+// 서버에서 데이터 받기
+async function getArticles(){
+    const response = await fetch(`${backend_base_url}/article`,{
+        method: 'GET'
+
+    })
+    response_json = await response.json()
+    // console.log(response_json)
+    return response_json.articles
 }
